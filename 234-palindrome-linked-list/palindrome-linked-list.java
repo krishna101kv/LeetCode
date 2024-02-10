@@ -10,6 +10,9 @@
  */
 class Solution {
     public ListNode rev(ListNode node){
+        if(node==null || node.next==null){
+            return node;
+        }
         ListNode temp=node,prev=null;
         while(temp!=null){
             ListNode front=temp.next;
