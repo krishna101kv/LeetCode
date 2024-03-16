@@ -2,10 +2,7 @@ class Solution {
     public int[] searchRange(int[] nums, int target) {
         int left=binSearch(nums,target,true);
         int right=binSearch(nums,target,false);
-        int[] arr=new int[2];
-        arr[0]=left;
-        arr[1]=right;
-        return arr;
+        return new int[]{left,right};
     }
     public static int binSearch(int[] nums, int target, boolean isleft){
         int s=0;
