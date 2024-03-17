@@ -7,17 +7,17 @@ class Solution {
             Character end = s.charAt(j);
             if(!Character.isLetterOrDigit(start)){
                 i++;
-                continue;
             }
-            if(!Character.isLetterOrDigit(end)){
+            else if(!Character.isLetterOrDigit(end)){
                 j--;
-                continue;
             }
-            if(Character.toLowerCase(start)!=Character.toLowerCase(end)){
-                return false;
+            else{
+                if(Character.toLowerCase(start)!=Character.toLowerCase(end)){
+                    return false;
+                }
+                i++;
+                j--;
             }
-            i++;
-            j--;
         }
         return true;
     }
