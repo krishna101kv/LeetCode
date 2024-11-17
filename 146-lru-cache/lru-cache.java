@@ -1,5 +1,4 @@
 class LRUCache {
-
     class DllNode {
         int key, val;
         DllNode prev, next;
@@ -10,55 +9,54 @@ class LRUCache {
         }
     }
 
-    private final int maxSize;
-    private int currentSize = 0;
     private final Map<Integer, DllNode> cache = new HashMap<>();
     private final DllNode head = new DllNode(-1, -1);
     private final DllNode tail = new DllNode(-1, -1);
+    private final int capacity;
+    private int currentSize = 0;
 
     public LRUCache(int capacity) {
-        this.maxSize = capacity;
+        this.capacity = capacity;
         head.next = tail;
         tail.prev = head;
     }
 
     public int get(int key) {
         if (cache.containsKey(key)) {
-            DllNode node = cache.get(key);
-            remove(node);
-            addToTail(node);
-            return node.val;
-        } else {
-            return -1;
+            DllNode currentNode = cache.get(key);
+            deleteNode(currentNode);
+            addNodeAtTail(currentNode);
+            return currentNode.val;
         }
+        return -1;
     }
 
     public void put(int key, int value) {
         if (cache.containsKey(key)) {
-            DllNode node = cache.get(key);
-            remove(node);
-            node.val = value;
-            addToTail(node);
+            DllNode currentNode = cache.get(key);
+            deleteNode(currentNode);
+            currentNode.val = value;
+            addNodeAtTail(currentNode);
         } else {
-            if (currentSize == maxSize) {
-                DllNode lru = head.next; // Least Recently Used Node
-                remove(lru);
+            if (currentSize == capacity) {
+                DllNode lru = head.next;
+                deleteNode(lru);
                 cache.remove(lru.key);
-            } else {
-                currentSize++;
+                currentSize--;
             }
             DllNode newNode = new DllNode(key, value);
+            addNodeAtTail(newNode);
             cache.put(key, newNode);
-            addToTail(newNode);
+            currentSize++;
         }
     }
 
-    private void remove(DllNode node) {
+    private void deleteNode(DllNode node) {
         node.prev.next = node.next;
         node.next.prev = node.prev;
     }
 
-    private void addToTail(DllNode node) {
+    private void addNodeAtTail(DllNode node) {
         node.prev = tail.prev;
         node.next = tail;
         tail.prev.next = node;
