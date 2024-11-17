@@ -9,11 +9,11 @@ class LRUCache {
         }
     }
 
-    private final Map<Integer, DllNode> cache = new HashMap<>();
-    private final DllNode head = new DllNode(-1, -1);
-    private final DllNode tail = new DllNode(-1, -1);
-    private final int capacity;
-    private int currentSize = 0;
+    Map<Integer, DllNode> cache = new HashMap<>();
+    DllNode head = new DllNode(-1, -1);
+    DllNode tail = new DllNode(-1, -1);
+    int capacity;
+    int currentSize = 0;
 
     public LRUCache(int capacity) {
         this.capacity = capacity;
