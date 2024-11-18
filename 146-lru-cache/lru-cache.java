@@ -13,7 +13,7 @@ class LRUCache {
     DllNode head = new DllNode(-1, -1);
     DllNode tail = new DllNode(-1, -1);
     int capacity;
-    int currentSize = 0;
+    private int currentSize = 0;
 
     public LRUCache(int capacity) {
         this.capacity = capacity;
