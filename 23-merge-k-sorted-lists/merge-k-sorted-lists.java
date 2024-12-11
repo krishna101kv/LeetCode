@@ -8,39 +8,37 @@
  *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
-
-class Pair{
-
-    int value;
-    ListNode node;
-
-    public Pair(int value , ListNode node){
-        this.value = value;
-        this.node = node;
-    }
-}
 class Solution {
-    public ListNode mergeKLists(ListNode[] lists) {
-        
-        PriorityQueue<Pair> pq = new PriorityQueue<>((x,y)->x.value - y.value);
-
-        for(int i =0; i<lists.length; i++){
-            if(lists[i]!=null)pq.add(new Pair(lists[i].val , lists[i]));
+    public ListNode merge2List(ListNode l1,ListNode l2){
+        ListNode dummy=new ListNode(-1);
+        ListNode tail=dummy;
+        while(l1!=null && l2!=null){
+            if(l1.val<l2.val){
+                tail.next=l1;
+                l1=l1.next;
+            }else{
+                tail.next=l2;
+                l2=l2.next;
+            }
+            tail=tail.next;
         }
-
-        ListNode dummy = new ListNode(-1);
-        ListNode temp = dummy;
-
-        while(!pq.isEmpty()){
-            Pair list = pq.peek();
-            pq.remove();
-            if(list.node.next!=null)pq.add(new Pair(list.node.next.val , list.node.next));
-            temp.next = list.node;
-            temp = temp.next;
-        }
-        temp.next = null;
+        tail.next=(l1!=null)?l1:l2;
         return dummy.next;
+    }
+    public ListNode mergeKLists(ListNode[] lists) {
+        if (lists == null || lists.length == 0) {
+            return null;
+        }
+        int interval = 1;
+        int n = lists.length;
 
-        
+        while (interval < n) {
+            for (int i = 0; i + interval < n; i += interval * 2) {
+                lists[i] = merge2List(lists[i], lists[i + interval]);
+            }
+            interval *= 2;
+        }
+
+        return lists[0];
     }
 }
