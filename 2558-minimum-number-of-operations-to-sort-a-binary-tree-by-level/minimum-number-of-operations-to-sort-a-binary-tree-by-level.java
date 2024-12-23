@@ -57,17 +57,21 @@ class Solution {
             if (visited[i] || map.get(arr2[i]) == i) {
                 continue;
             }
+
             int cycleSize = 0;
             int j = i;
+
             while (!visited[j]) {
                 visited[j] = true;
                 j = map.get(arr2[j]);
                 cycleSize++;
             }
+
             if (cycleSize > 1) {
                 swaps += (cycleSize - 1);
             }
         }
+
         return swaps;
     }
 }
