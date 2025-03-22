@@ -1,4 +1,5 @@
 class Solution {
+    //Boyer-Moore Voting Algorithm
     public int majorityElement(int[] nums) {
         int max=0;
         int k=nums[0];
