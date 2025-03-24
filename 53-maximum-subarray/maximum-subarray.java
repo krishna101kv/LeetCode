@@ -4,15 +4,15 @@ class Solution {
         int osum=nums[0];
         for(int i=1;i<nums.length;i++){
             if(csum>=0){
-                csum+=nums[i];
-            }
-            else{
-                csum=nums[i];
+                 csum+=nums[i];
+            }else{
+               csum=nums[i]; 
             }
             if(csum>osum){
                 osum=csum;
             }
         }
         return osum;
+        
     }
 }
