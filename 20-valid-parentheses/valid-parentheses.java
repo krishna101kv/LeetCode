@@ -9,13 +9,14 @@ class Solution {
                 if(stack.isEmpty()){
                     return false;
                 }
-                char topMost=stack.pop();
-                if((c==')' && topMost!='(') || (c=='}' && topMost!='{') || (c==']' && topMost!='[')){
+                char top=stack.pop();
+                if(c==')' && top!='(' || c=='}' && top!='{' || c==']' && top!='['){
                     return false;
                 }
             }
-            
         }
         return stack.isEmpty();
     }
 }
+
+
