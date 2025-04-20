@@ -13,22 +13,47 @@
  *     }
  * }
  */
+
+import java.util.Stack;
+
 class Solution {
-    public int goodNodes(TreeNode root) {
-        return dfs(root, root.val);
+    // Helper class to store a node and the max value seen so far on the path
+    static class NodeInfo {
+        TreeNode node;
+        int maxSoFar;
+
+        NodeInfo(TreeNode node, int maxSoFar) {
+            this.node = node;
+            this.maxSoFar = maxSoFar;
+        }
     }
-    public int dfs(TreeNode root, int maxSoFar) {
-        if (root == null) {
-            return 0;
+
+    public int goodNodes(TreeNode root) {
+        if (root == null) return 0;
+
+        Stack<NodeInfo> stack = new Stack<>();
+        stack.push(new NodeInfo(root, root.val));
+        int count = 0;
+
+        while (!stack.isEmpty()) {
+            NodeInfo current = stack.pop();
+            TreeNode node = current.node;
+            int maxSoFar = current.maxSoFar;
+
+            if (node.val >= maxSoFar) {
+                count++;
+            }
+
+            int newMax = Math.max(maxSoFar, node.val);
+            if (node.right != null) {
+                stack.push(new NodeInfo(node.right, newMax));
+            }
+            if (node.left != null) {
+                stack.push(new NodeInfo(node.left, newMax));
+            }
         }
 
-        int res = 0;
-        if (root.val >= maxSoFar) {
-            res = 1;
-        }
-        int newMax = Math.max(maxSoFar, root.val);
-        res += dfs(root.left, newMax);
-        res += dfs(root.right, newMax);
-        return res;
+        return count;
     }
 }
+
