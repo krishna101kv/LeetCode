@@ -18,24 +18,24 @@ class Solution {
         if(root==null){
             return false;
         }
-        Stack<TreeNode> sum=new Stack<>();
+        Stack<TreeNode> path=new Stack<>();
         Stack<Integer> pathSum=new Stack<>();
-        sum.push(root);
+        path.push(root);
         pathSum.push(root.val);
 
-        while(!sum.isEmpty()){
-            TreeNode tempNode=sum.pop();
+        while(!path.isEmpty()){
+            TreeNode tempNode=path.pop();
             int totalSum=pathSum.pop();
 
             if(tempNode.left==null && tempNode.right==null && totalSum==targetSum){
                 return true;
             }
             if(tempNode.right!=null){
-                sum.add(tempNode.right);
+                path.add(tempNode.right);
                 pathSum.add(totalSum+ tempNode.right.val);
             }
              if(tempNode.left!=null){
-                sum.add(tempNode.left);
+                path.add(tempNode.left);
                 pathSum.add(totalSum+ tempNode.left.val);
             }
         }
