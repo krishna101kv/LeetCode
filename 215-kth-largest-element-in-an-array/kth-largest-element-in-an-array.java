@@ -7,6 +7,6 @@ class Solution {
                 pq.remove();
             }
         }
-        return pq.remove();
+        return pq.peek();
     }
 }
