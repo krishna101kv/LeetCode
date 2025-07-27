@@ -7,43 +7,67 @@
  *     TreeNode(int x) { val = x; }
  * }
  */
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+
 class Solution {
     public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
-        HashMap<TreeNode, TreeNode> parentMap=findParents(root);
-        return findNodesAtK(root, target,k,parentMap);
-    }
-    private HashMap<TreeNode, TreeNode> findParents(TreeNode root){
-        HashMap<TreeNode, TreeNode> parentMap=new HashMap<>();
-        iterateTree(root,null,parentMap);
-        return parentMap;
-    }
-    private void iterateTree(TreeNode currNode, TreeNode currParent,HashMap<TreeNode, TreeNode> parentMap){
-        if(currNode==null){
-            return ;
+        Map<TreeNode, TreeNode> parentMap = new HashMap<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+        Set<TreeNode> visited = new HashSet<>();
+        List<Integer> result = new ArrayList<>();
+
+        // Step 1: BFS to map parents
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            if (node.left != null) {
+                parentMap.put(node.left, node);
+                queue.offer(node.left);
+            }
+            if (node.right != null) {
+                parentMap.put(node.right, node);
+                queue.offer(node.right);
+            }
         }
-        parentMap.put(currNode,currParent);
-        iterateTree(currNode.left,currNode,parentMap);
-        iterateTree(currNode.right,currNode,parentMap);
-        return;
-    }
-    private List<Integer> findNodesAtK(TreeNode root,TreeNode target,int k,HashMap<TreeNode,TreeNode> parentMap){
-        HashSet<TreeNode> visited=new HashSet<>();
-        List<Integer> ans=new ArrayList<>();
-        iterateTree(target,k,parentMap,visited,ans);
-        return ans;
-    }
-    private void iterateTree(TreeNode current,int k,HashMap<TreeNode , TreeNode> parentMap, HashSet<TreeNode> visited, List<Integer> ans){
-        if(current==null || visited.contains(current)){
-            return;
+
+        // Step 2: BFS from target to find nodes at distance k
+        queue.offer(target);
+        visited.add(target);
+        int distance = 0;
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            if (distance == k) {
+                for (TreeNode node : queue) {
+                    result.add(node.val);
+                }
+                return result;
+            }
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+
+                if (node.left != null && visited.add(node.left)) {
+                    queue.offer(node.left);
+                }
+                if (node.right != null && visited.add(node.right)) {
+                    queue.offer(node.right);
+                }
+                TreeNode parent = parentMap.get(node);
+                if (parent != null && visited.add(parent)) {
+                    queue.offer(parent);
+                }
+            }
+            distance++;
         }
-        visited.add(current);
-        if(k==0){
-            ans.add(current.val);
-            return;
-        }
-        iterateTree(current.left,k-1,parentMap,visited,ans);
-        iterateTree(current.right,k-1,parentMap,visited,ans);
-        iterateTree(parentMap.get(current),k-1,parentMap,visited,ans);
-        return;
+
+        return result;
     }
 }
