@@ -13,7 +13,7 @@
  *     }
  * }
  */
- //ON
+ //ON SC:ON
 class Solution{
      public TreeNode buildTree(int[] preorder, int[] inorder) {
         Map<Integer,Integer> inMap=new HashMap<>();
