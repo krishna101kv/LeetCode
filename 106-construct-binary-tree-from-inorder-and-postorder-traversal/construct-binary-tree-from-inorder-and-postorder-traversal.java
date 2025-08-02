@@ -15,29 +15,25 @@
  */
 class Solution {
     public TreeNode buildTree(int[] inorder, int[] postorder) {
-        int[] postIndex={postorder.length-1};
-        HashMap<Integer,Integer> inorderMap=buildMap(inorder);
-        return constructTrees(postorder,inorder,postIndex,0,inorder.length-1,inorderMap);
-    }
-    public TreeNode constructTrees(int[] postorder,int[] inorder, int[] postIndex,int inStart,int inEnd,
-    HashMap<Integer,Integer> inorderMap){
-        if(postIndex[0]<0 || inStart>inEnd){
+        if(inorder==null || postorder==null || inorder.length!=postorder.length)
             return null;
-        }
-        int currVal=postorder[postIndex[0]];
-        TreeNode currNode=new TreeNode(currVal);
-
-        postIndex[0]-=1;
-        int i=inorderMap.get(currVal);
-        currNode.right=constructTrees(postorder,inorder,postIndex,i+1,inEnd,inorderMap);
-        currNode.left=constructTrees(postorder,inorder,postIndex,inStart,i-1,inorderMap);
-        return currNode;
-    }
-    public HashMap<Integer,Integer> buildMap(int[] inorder){
+        
         HashMap<Integer,Integer> inorderMap=new HashMap<>();
         for(int i=0;i<inorder.length;i++){
             inorderMap.put(inorder[i],i);
         }
-        return inorderMap;
+        return buildTreePostIn(inorder,0,inorder.length-1,postorder,0,postorder.length-1,inorderMap);
+    }
+    private TreeNode buildTreePostIn(int[] inorder,int is,int ie, int[] postorder,int ps,int pe,HashMap<Integer,Integer> inorderMap){
+        if(ps>pe || is>ie)    return null;
+        
+        TreeNode root=new TreeNode(postorder[pe]);
+
+        int inRoot=inorderMap.get(postorder[pe]);
+        int numsLeft=inRoot-is;
+        root.left=buildTreePostIn(inorder,is,inRoot-1,postorder,ps,ps+numsLeft-1,inorderMap);
+        root.right=buildTreePostIn(inorder,inRoot+1,ie,postorder,ps+numsLeft,pe-1,inorderMap);
+
+        return root;
     }
 }
