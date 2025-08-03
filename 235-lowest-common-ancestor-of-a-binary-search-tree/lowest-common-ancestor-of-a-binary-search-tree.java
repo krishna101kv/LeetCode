@@ -15,8 +15,6 @@ class Solution {
             if(current.val>p.val && current.val>q.val){
                 current=current.left;
             }
-               
-            
             else if(current.val<p.val && current.val<q.val){
                   current=current.right;
             }
